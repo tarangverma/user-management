@@ -55,7 +55,7 @@ This is a web application for managing users, built with Vue.js for the frontend
   ```
     nodemon app.js or node app.js
   ```
-  The backend server will start on http://localhost:5000.
+  The backend server will start on http://localhost:3000.
   
 3. Set Up the Frontend
 
@@ -72,10 +72,10 @@ This is a web application for managing users, built with Vue.js for the frontend
     npm run dev
   ```
 
-  The frontend server will start on http://localhost:5173.
+  The frontend server will start on http://localhost:8080.
   ## Usage
 
-    Open your browser and go to http://localhost:5173.
+    Open your browser and go to http://localhost:8080.
     Use the Sign Up page to create a new account.
     Log in with your credentials.
     Navigate to the Dashboard to manage users:
@@ -90,17 +90,22 @@ project-root/
 │
 ├── backend/                # Backend API
 │   ├── controllers/        # API controllers
+│   ├── databse/        # API controllers
 │   ├── models/             # Database models
 │   ├── routes/             # API routes
+│   ├── middleware/             # API routes
 │   ├── migrations/         # Database migrations
 │   ├── .env                # Environment variables
-│   ├── server.js           # Main server file
+│   ├── app.js           # Main server file
 │
 ├── frontend/               # Frontend app
 │   ├── src/
+│   │   ├── assets/     # Vue components
 │   │   ├── components/     # Vue components
-│   │   ├── views/          # Vue views (pages)
+│   │   ├── pages/          # Vue views (pages)
 │   │   ├── router/         # Vue Router setup
+│   │   ├── services/         # Vue Router setup
+│   │   ├── stores/         # Vue Router setup
 │   │   ├── App.vue         # Root component
 │   │   ├── main.js         # Entry point
 │   └── public/             # Static files
@@ -108,22 +113,11 @@ project-root/
 └── README.md               # Project documentation
 ```
 
-Scripts
-Backend Scripts
-  ```
-    npm run dev - Start the backend in development mode.
-    npm start - Start the backend in production mode.
-  ```
-Frontend Scripts
-  ```
-    npm run dev - Start the frontend in development mode.
-    npm run build - Build the frontend for production.
-  ```
-Troubleshooting
+## Troubleshooting
 
-    If the backend fails to connect to the database:
-        Ensure PostgreSQL is running.
-        Verify the credentials in the .env file.
+## If the backend fails to connect to the database:
+    - Ensure PostgreSQL is running.
+    - Verify the credentials in the .env file.
 ## Database
   Use PG Admin to view tables(optional)
   use same credientials to create a server and database as in .env file
@@ -151,25 +145,12 @@ Endpoint: POST /api/users/login
 Description: Authenticate a user and return a JWT token.
 
 Request Body (JSON):
-
+```
 {
   "email": "john.doe@example.com",
   "password": "password123"
 }
-
-Response (Success):
-
-{
-  "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-
-Response (Error):
-
-{
-  "error": "Invalid email or password"
-}
-
+```
 3. Get All Users
 
 Endpoint: GET /api/users
@@ -245,8 +226,8 @@ Headers:
 ```
 6. Invite New User
 ```
-Endpoint: POST /api/users/invite
-Description: Add a new user to the system (admin only).
+Endpoint: POST /api/users
+Description: Add a new user to the system.
 ```
 Headers:
 ```
@@ -259,6 +240,7 @@ Request Body (JSON):
 {
   "name": "Invited User",
   "email": "invited.user@example.com",
+  "password": "password"
   "role": "User"
 }
 ```
