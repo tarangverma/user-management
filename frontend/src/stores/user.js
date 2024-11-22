@@ -2,10 +2,13 @@ import { defineStore } from 'pinia';
 import { loginUser, fetchUsers, updateUser, deleteUser, createUser } from '@/services/userService';
 
 export const useUserStore = defineStore('user', {
-  state: () => ({
-    users: [],
-    token: localStorage.getItem('token') || '',
-  }),
+    state: () => ({
+      users: [],
+      token: localStorage.getItem('token') || '',
+    }),
+    getters: {
+      isAuthenticated: (state) => !!state.token,
+    },
   actions: {
     async login(email, password) {
       const response = await loginUser(email, password);
@@ -13,8 +16,14 @@ export const useUserStore = defineStore('user', {
       localStorage.setItem('token', response.token);
     },
     async loadUsers() {
-      const response = await fetchUsers(this.token);
-      this.users = response;
+      try {
+        const response = await fetchUsers(this.token);
+        this.users = [...response];
+        return response;
+      } catch (error) {
+        console.error('Load users error:', error);
+        throw error;
+      }
     },
     logout() {
       this.token = '';
@@ -36,6 +45,11 @@ export const useUserStore = defineStore('user', {
       const newUser = await createUser(userData, this.token);
       this.users.push(newUser);
       return newUser;
+    },
+    async initialize() {
+      if (this.token) {
+        await this.loadUsers();
+      }
     },
   },
 });

@@ -128,16 +128,28 @@
   import { useUserStore } from '@/stores/user';
   import { useRouter } from 'vue-router';
   import { useToast } from 'vue-toastification';
+  import { onMounted, computed } from 'vue';
   
   export default {
     setup() {
       const userStore = useUserStore();
       const toast = useToast();
       const router = useRouter();
-      userStore.loadUsers();
+      
+      const users = computed(() => userStore.users);
+      
+      onMounted(async () => {
+        try {
+          await userStore.initialize();
+        } catch (error) {
+          console.error('Failed to load users:', error);
+          toast.error('Failed to load users');
+          router.push('/login');
+        }
+      });
       
       return { 
-        users: userStore.users,
+        users,
         toast,
         userStore,
         router,
