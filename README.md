@@ -247,6 +247,6 @@ Request Body (JSON):
 
 ## Examples
 
-![Screenshot (1236)](frontend\src\assets\Screenshot (1236).png)
-![Screenshot (1237)](frontend\src\assets\Screenshot (1237).png)
-![Screenshot (1238)](frontend\src\assets\Screenshot (1238).png)
+![Screenshot (1236)](frontend/src/assets/Screenshot%20(1236).png)
+![Screenshot (1236)](frontend/src/assets/Screenshot%20(1237).png)
+![Screenshot (1236)](frontend/src/assets/Screenshot%20(1238).png)
