@@ -33,3 +33,10 @@ export const deleteUser = async (userId, token) => {
   });
   return data; // Deletion confirmation
 };
+
+export const createUser = async (userData, token) => {
+  const { data } = await axios.post(`${API_URL}/users`, userData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data; // New user data
+};

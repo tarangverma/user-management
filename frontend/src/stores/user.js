@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { loginUser, fetchUsers, updateUser, deleteUser } from '@/services/userService';
+import { loginUser, fetchUsers, updateUser, deleteUser, createUser } from '@/services/userService';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -21,8 +21,6 @@ export const useUserStore = defineStore('user', {
       localStorage.removeItem('token');
     },
     async updateUser(userData) {
-      console.log(userData);
-      console.log(this.token);
       const updatedUser = await updateUser(userData.id, userData, this.token);
       const index = this.users.findIndex(user => user.id === userData.id);
       if (index !== -1) {
@@ -33,6 +31,11 @@ export const useUserStore = defineStore('user', {
     async deleteUser(userId) {
       await deleteUser(userId, this.token);
       this.users = this.users.filter(user => user.id !== userId);
-    }
+    },
+    async createUser(userData) {
+      const newUser = await createUser(userData, this.token);
+      this.users.push(newUser);
+      return newUser;
+    },
   },
 });

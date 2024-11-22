@@ -1,7 +1,8 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { getAllUsers, getUserByEmail, createUser, updateUser, deleteUser } = require('../models/userModel');
+ // Adjust path as needed
 
 // User registration
 const registerUser = async (req, res) => {
@@ -69,4 +70,40 @@ const deleteUserAccount = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getUsers, updateUserDetails, deleteUserAccount };
+const createNewUser = async (req, res) => {
+    try {
+        // Validate request body
+        const { name, email, password, role } = req.body;
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+
+        // Check if user already exists
+        const existingUser = await getUserByEmail(email);
+        if (existingUser) {
+            return res.status(400).json({ message: 'User with this email already exists' });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new user
+        const newUser = await createUser(
+            name,
+            email,
+            hashedPassword,
+            role || 'user'
+        );
+
+        res.status(201).json({
+            message: 'User created successfully',
+            user: newUser
+        });
+
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ message: 'Error creating user', error: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, getUsers, updateUserDetails, deleteUserAccount, createNewUser };

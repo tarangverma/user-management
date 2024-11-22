@@ -2,12 +2,20 @@
     <div>
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl text-blue-500">Dashboard</h1>
-        <button 
-          @click="handleLogout" 
-          class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-        >
-          Logout
-        </button>
+        <div class="flex gap-2">
+          <button 
+            @click="showCreateModal = true"
+            class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+          >
+            Invite User
+          </button>
+          <button 
+            @click="handleLogout" 
+            class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       <!-- Add search and filter controls -->
@@ -79,6 +87,40 @@
           </form>
         </div>
       </div>
+
+      <!-- Create User Modal -->
+      <div v-if="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg w-96">
+          <h2 class="text-xl mb-4">Create User</h2>
+          <form @submit.prevent="handleCreateUser">
+            <div class="mb-4">
+              <label class="block mb-2">Name</label>
+              <input v-model="newUser.name" type="text" class="w-full border p-2 rounded" required>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">Email</label>
+              <input v-model="newUser.email" type="email" class="w-full border p-2 rounded" required>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">Password</label>
+              <input v-model="newUser.password" type="password" class="w-full border p-2 rounded" required>
+            </div>
+            <div class="mb-4">
+              <label class="block mb-2">Role</label>
+              <select v-model="newUser.role" class="w-full border p-2 rounded" required>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button type="button" @click="showCreateModal = false" 
+                class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Cancel</button>
+              <button type="submit" 
+                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </template>
   
@@ -112,6 +154,13 @@
           name: '',
           email: '',
           role: '',
+        },
+        showCreateModal: false,
+        newUser: {
+          name: '',
+          email: '',
+          password: '',
+          role: 'user',
         },
       };
     },
@@ -167,6 +216,25 @@
           this.router.push('/login');
         } catch (error) {
           this.toast.error('Failed to logout');
+        }
+      },
+
+      async handleCreateUser() {
+        try {
+          await this.userStore.createUser(this.newUser);
+          await this.userStore.loadUsers();
+          this.toast.success('User created successfully');
+          this.showCreateModal = false;
+          // Reset form
+          this.newUser = {
+            name: '',
+            email: '',
+            password: '',
+            role: 'user',
+          };
+        } catch (error) {
+          console.error(error);
+          this.toast.error('Failed to create user');
         }
       },
     },
