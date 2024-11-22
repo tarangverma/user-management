@@ -113,18 +113,7 @@ project-root/
 └── README.md               # Project documentation
 ```
 
-Scripts
-Backend Scripts
-  ```
-    npm run dev - Start the backend in development mode.
-    npm start - Start the backend in production mode.
-  ```
-Frontend Scripts
-  ```
-    npm run dev - Start the frontend in development mode.
-    npm run build - Build the frontend for production.
-  ```
-Troubleshooting
+## Troubleshooting
 
 ## If the backend fails to connect to the database:
     - Ensure PostgreSQL is running.
