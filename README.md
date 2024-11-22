@@ -24,7 +24,7 @@ This is a web application for managing users, built with Vue.js for the frontend
 ## Installation and Setup
 1. Clone the Repository
   ```
-    git clone (https://github.com/tarangverma/user-management.git)
+    git clone https://github.com/tarangverma/user-management.git
     cd user-management
   ```
 2. Set Up the Backend
