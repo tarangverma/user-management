@@ -24,8 +24,8 @@ This is a web application for managing users, built with Vue.js for the frontend
 ## Installation and Setup
 1. Clone the Repository
   ```
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
+    git clone https://github.com/tarangverma/user-management.git
+    cd user-management
   ```
 2. Set Up the Backend
 
@@ -113,14 +113,30 @@ project-root/
 └── README.md               # Project documentation
 ```
 
+## Database
+  Use PG Admin to view tables(optional)
+  use same credientials to create a server and database as in .env file
+
+## Set up PostgreSQL:
+
+Install PostgreSQL.
+Create a database user_management and table users:
+```
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
 ## Troubleshooting
 
 ## If the backend fails to connect to the database:
     - Ensure PostgreSQL is running.
     - Verify the credentials in the .env file.
-## Database
-  Use PG Admin to view tables(optional)
-  use same credientials to create a server and database as in .env file
 
 ## API use case
 
