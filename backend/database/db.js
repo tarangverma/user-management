@@ -10,7 +10,7 @@ const config = {
     database: process.env.DB_NAME,
     ssl: {
         rejectUnauthorized: true,
-        ca: process.env.DB_CA_CERT,
+        ca: fs.readFileSync('./database/ca.pem').toString()
     },
 };
 
